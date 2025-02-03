@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:80"  # Map local port 8000 → container port 80
+    volumes:
+      - .:/var/www/html  # Sync project files
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_NAME: hotel_management
+      DB_USER: root
+      DB_PASSWORD: root
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hotel_management
+    ports:
+      - "3306:3306"  # MySQL port
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"  # phpMyAdmin access
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root

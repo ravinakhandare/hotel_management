@@ -1,0 +1,71 @@
+<?php
+include 'db.php'; // Include the database connection
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Room - Hotel Management</title>
+    <link rel="stylesheet" href="bookingstyles.css">
+</head>
+<body>
+    <header>
+        <h1>Book a Room</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="rooms.html">Rooms</a></li>
+                <li><a href="booking.php">Book Now</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="booking-form">
+            <h2>Reserve Your Stay</h2>
+            <form action="booking.php" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="check_in">Check-In Date:</label>
+                    <input type="date" id="check_in" name="check_in" required>
+                </div>
+                <div class="form-group">
+                    <label for="check_out">Check-Out Date:</label>
+                    <input type="date" id="check_out" name="check_out" required>
+                </div>
+                <div class="form-group">
+                    <label for="room_id">Room Type:</label>
+                    <select id="room_id" name="room_id" required>
+                        <option value="">Select a Room</option>
+                        <option value="single">Single Room</option>
+                        <option value="double">Double Room</option>
+                        <option value="suite">Suite</option>
+                        <?php
+                        $sql = "SELECT id, room_type FROM rooms WHERE availability = TRUE";
+                        $result = $conn->query($sql);
+                        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['room_type'] . '</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Book Now</button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Hotel Management</p>
+    </footer>
+</body>
+</html>
